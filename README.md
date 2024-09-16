@@ -19,7 +19,7 @@ Outros: JWT para autenticação, TypeScript para tipagem
 Pré-requisitos: Node.js (18.20.4) .
 Clonar o repositório:
 
-git clone https://seu-repositorio.git
+git clone [https://seu-repositorio.git](https://github.com/JeffersonMeira99/financial/tree/master)
 
 Instalar as dependências:
 cd financial-app
