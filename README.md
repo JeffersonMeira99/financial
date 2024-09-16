@@ -28,14 +28,13 @@ npm install
 5. ## Iniciando o Desenvolvimento
    Iniciar o servidor:
    npm run server
-   Use o código com cuidado.
+   .env ( SECRET_KEY )
 
 Iniciar o desenvolvimento:
 npm run dev
 Use o código com cuidado.
 
-6. Teste
+6. ## Teste
    Rodar os testes:
    npm test
-
 
