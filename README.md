@@ -27,7 +27,7 @@ npm install
 
 5. ## Iniciando o Desenvolvimento
    Iniciar o servidor:
-   npm run server
+   npm run server,
    .env ( SECRET_KEY )
 
 Iniciar o desenvolvimento:
