@@ -6,7 +6,7 @@
                 <a
                     href="https://github.com/rody-huancas/"
                     target="_blank"
-                    className="text-indigo-600 font-medium uppercase underline"
+                    className="text-indigo-600 font-medium uppercase underlin"
                 >
                     
                 </a>
