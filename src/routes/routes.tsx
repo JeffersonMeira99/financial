@@ -1,40 +1,20 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { MenuLateral } from '../components/menu/MenuLateral';
-import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
-import Home from '../pages/home/Home';
-import TransactionForm from '../components/transactionForm/TransactionForm';
-import Login from '../pages/login/Login';
+import { Route, Routes } from 'react-router-dom';
+import { AuthLayout } from '../layouts/AuthLayout';
+import { LoginPage } from '../pages/login/Login';
+import { AdminLayout } from '../layouts/AdminLayout';
+import HomePage from '../pages/home/Home';
 
-const AppRoutes = () => {
-    const location = useLocation();
-
-    return location.pathname !== '/' ? (
-        <MenuLateral>
-            <Routes>
-                <Route
-                    path="/home"
-                    element={
-                        <PrivateRoute>
-                            <Home />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/transactionForm"
-                    element={
-                        <PrivateRoute>
-                            <TransactionForm />
-                        </PrivateRoute>
-                    }
-                />
-            </Routes>
-        </MenuLateral>
-    ) : (
+export const AppRouter = () => {
+    return (
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<AuthLayout />}>
+                <Route index element={<LoginPage />} />
+                {/*   <Route path="register" element={<RegisterUser />} /> */}
+            </Route>
+
+            <Route path="/home" element={<AdminLayout />}>
+                <Route path="/home" element={<HomePage />} />
+            </Route>
         </Routes>
     );
 };
-
-export default AppRoutes;

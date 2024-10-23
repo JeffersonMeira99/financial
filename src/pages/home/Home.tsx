@@ -1,31 +1,8 @@
 import React from 'react';
 import { Box, Paper } from '@mui/material';
 import BalanceDisplay from '../../components/BalanceDisplay/BalanceDisplay';
-import TransactionList from '../../components/TransactionList/TransactionList';
-import api from '../../utils/api';
 
-const Home: React.FC = () => {
-    const [balance, setBalance] = React.useState<number>(0);
-
-    React.useEffect(() => {
-        const fetchBalance = async () => {
-            try {
-                const token = localStorage.getItem('token');
-
-                const response = await api.get('/balance', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setBalance(response.data.balance);
-            } catch (error) {
-                console.error('Error fetching balance:', error);
-            }
-        };
-
-        fetchBalance();
-    }, []);
-
+const HomePage: React.FC = () => {
     return (
         <Box
             sx={{
@@ -37,13 +14,10 @@ const Home: React.FC = () => {
             }}
         >
             <Paper sx={{ padding: '16px', marginBottom: '24px' }}>
-                <BalanceDisplay balance={balance} />
-            </Paper>
-            <Paper sx={{ padding: '16px' }}>
-                <TransactionList />
+                <BalanceDisplay />
             </Paper>
         </Box>
     );
 };
 
-export default Home;
+export default HomePage;

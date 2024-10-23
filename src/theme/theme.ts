@@ -28,15 +28,14 @@ const themeConstants = {
     },
 };
 
-// Check here for more configurations https://material-ui.com/customization/default-theme/
 const theme = createTheme({
     palette: {
         primary: themeConstants.primary,
         secondary: themeConstants.secondary,
         background: { paper: themeConstants.paper },
         text: {
-            primary: themeConstants.fg.main, 
-            secondary: themeConstants.fg.dark, 
+            primary: themeConstants.fg.main,
+            secondary: themeConstants.fg.dark,
         },
         error: themeConstants.error,
     },
@@ -48,17 +47,17 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     '& .MuiInputBase-input': {
-                        color: themeConstants.fg.main, 
+                        color: themeConstants.fg.main,
                     },
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                            borderColor: themeConstants.secondary.main, 
+                            borderColor: themeConstants.secondary.main,
                         },
                         '&:hover fieldset': {
-                            borderColor: themeConstants.primary.main, 
+                            borderColor: themeConstants.primary.main,
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: themeConstants.primary.main, 
+                            borderColor: themeConstants.primary.main,
                         },
                     },
                     '& .MuiInputLabel-root': {

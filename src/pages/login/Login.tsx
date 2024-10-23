@@ -1,132 +1,87 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../utils/api';
-import {
-    Button,
-    TextField,
-    Typography,
-    Box,
-    Paper,
-    Alert,
-    CircularProgress,
-} from '@mui/material';
+import { FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useAuthStore } from '../../store/auth/auth.store';
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [loginError, setLoginError] = useState('');
-    const [loading, setLoading] = useState(false);
-
+export const LoginPage = () => {
     const navigate = useNavigate();
 
-    const validateEmail = (email: string) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    };
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
 
-    const handleLogin = async () => {
-        setEmailError('');
-        setPasswordError('');
-        setLoginError('');
-        setLoading(true);
+    const loginUser = useAuthStore(state => state.loginUser);
+    const authStatus = useAuthStore(state => state.status);
 
-        if (!email) {
-            setEmailError('O email é obrigatório.');
-            setLoading(false);
-            return;
-        } else if (!validateEmail(email)) {
-            setEmailError('O email não é válido.');
-            setLoading(false);
-            return;
-        }
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const { email, password } = credentials;
 
-        if (!password) {
-            setPasswordError('A senha é obrigatória.');
-            setLoading(false);
-            return;
+        if ([email, password].includes('')) {
+            return toast.error('Todos os campos são obrigatórios');
         }
 
         try {
-            const response = await api.post('/login', { email, password });
+            await loginUser(credentials);
 
-            if (response.status === 200 && response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                navigate('/home');
+            if (authStatus === 'authorized') {
+                navigate('/Home');
             } else {
-                setLoginError(
-                    'Falha ao fazer login. Verifique suas credenciais.',
-                );
+                toast.error('Erro ao autenticar. Verifique suas credenciais.');
             }
-        } catch (error: any) {
-            console.error('Login error:', error);
-            setLoginError('Falha ao fazer login. Verifique suas credenciais.');
-        } finally {
-            setLoading(false);
-        }
+        } catch (error) {}
+    };
+
+    const handleChange = (e: FormEvent<HTMLInputElement>) => {
+        const { name, value } = e.currentTarget;
+        setCredentials(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     return (
-        <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            minHeight="100vh"
-            bgcolor="grey.100"
-        >
-            <Paper elevation={3} className="p-8 w-full max-w-sm">
-                <Typography variant="h5" component="h2" gutterBottom>
-                    Login
-                </Typography>
-                {loginError && <Alert severity="error">{loginError}</Alert>}
-                <Box
-                    component="form"
-                    onSubmit={e => {
-                        e.preventDefault();
-                        handleLogin();
-                    }}
-                >
-                    <TextField
-                        label="Email"
+        <>
+            <h2 className="text-xl md:text-2xl font-bold leading-tight mt-12 text-gray-600 uppercase">
+                Iniciar Sessão
+            </h2>
+            <form className="mt-6" onSubmit={handleSubmit}>
+                <div>
+                    <label className="block text-gray-700">Email</label>
+                    <input
                         type="email"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        error={!!emailError}
-                        helperText={emailError}
+                        placeholder="joao.silva@gmail.com"
+                        className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                        name="email"
+                        value={credentials.email}
+                        onChange={handleChange}
                     />
-                    <TextField
-                        label="Senha"
+                </div>
+                <div className="mt-4">
+                    <label className="block text-gray-700">Senha</label>
+                    <input
                         type="password"
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        error={!!passwordError}
-                        helperText={passwordError}
+                        placeholder="**************"
+                        minLength={6}
+                        className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+          focus:bg-white focus:outline-none"
+                        name="password"
+                        value={credentials.password}
+                        onChange={handleChange}
                     />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        className="mt-4"
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <CircularProgress size={24} color="inherit" />
-                        ) : (
-                            'Entrar'
-                        )}
-                    </Button>
-                </Box>
-            </Paper>
-        </Box>
+                </div>
+                <p className="mt-2 text-gray-500">
+                    Ainda não tem uma conta? Cadastre-se agora e comece sua
+                    jornada! ?
+                    <Link to={'register'} className="text-indigo-600 underline">
+                        Criar Conta
+                    </Link>
+                </p>
+                <button
+                    type="submit"
+                    className="w-full block bg-indigo-500 hover:bg-indigo-400 text-white font-semibold rounded-lg px-4 py-3 mt-6"
+                >
+                    Acessar
+                </button>
+            </form>
+        </>
     );
 };
-
-export default Login;

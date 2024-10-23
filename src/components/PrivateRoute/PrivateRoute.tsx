@@ -8,7 +8,6 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log(token, 'token');
         setIsAuthenticated(!!token);
     }, []);
 

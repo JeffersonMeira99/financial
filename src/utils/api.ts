@@ -1,13 +1,13 @@
 import axios from 'axios';
-const token = localStorage.getItem('token');
+import { useAuthStore } from '../store/auth/auth.store';
 
-const api = axios.create({
-    baseURL: 'http://localhost:5000',
-    headers: {
-        Authorization: `Bearer ${token}`,
-    },
+export const configApi = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
-console.log(api, 'api');
+configApi.interceptors.request.use(config => {
+    const token = useAuthStore.getState().token;
 
-export default api;
+    if (token) config.headers['Authorization'] = `Bearer ${token}`;
+    return config;
+});
