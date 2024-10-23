@@ -8,7 +8,7 @@
                     target="_blank"
                     className="text-indigo-600 font-medium uppercase underline"
                 >
-                    Rody Huancas
+                    
                 </a>
             </p>
         </footer>
